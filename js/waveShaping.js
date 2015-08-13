@@ -1,11 +1,6 @@
-var WaveShaping = (function() {
-		
-	var WaveShaping = function() {
-		var waveShaping = this; 
-		return waveShaping;
-	}	
-	
-	var createWaveShaperFromArray = function(array, maxIntensity, context) {
+var PTM = PTM || {};
+PTM.WaveShaping = {	
+	createWaveShaperFromArray : function(array, maxIntensity, context) {
 		var distortion = context.createWaveShaper();
 		var maxValue = arrayMax(array); var minValue = arrayMin(array);
 		var vertShift = (maxValue+minValue)/2; var intensityShift = maxIntensity/ ( (maxValue-minValue) /2 );
@@ -19,15 +14,12 @@ var WaveShaping = (function() {
 		distortion.oversample = '4x';
 		return distortion;
 		
-	}		
+	},
 	
-	WaveShaping.prototype = {
-		createWaveShaperFromArray: createWaveShaperFromArray,
-	};
-	
-	WaveShaping.prototype.constructor = WaveShaping;	
-	return WaveShaping;	
-})();
-
-
-var waveShaping = new WaveShaping();
+	transformQuandlStockData: function(array) {
+		array.shift();
+		array.pop();
+		var closeValues = array.map(function(d){return parseFloat(d[4]);});
+		return levelArray(closeValues);
+	}	
+};

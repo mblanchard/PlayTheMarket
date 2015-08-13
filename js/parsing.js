@@ -1,5 +1,5 @@
-
-var Parsing = (function(papaDependency){	
+var PTM = PTM || {};
+PTM.Parsing = (function(papaDependency){	
 	
 	if(papaDependency === null || typeof papaDependency === 'undefined'){
 		if(window.debug_flag) { console.log("PapaParse dependency not provided"); }
@@ -43,7 +43,7 @@ var Parsing = (function(papaDependency){
 	return Parsing;	
 })(Papa);
 
-var parsing = new Parsing();
+var parsing = new PTM.Parsing();
 
 
 
