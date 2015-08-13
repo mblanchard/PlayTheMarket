@@ -28,8 +28,7 @@
                 keyboard = new QwertyHancock(settings);
 			
 			var context = audioWrapping.initContext();
-			var oscillator = audioWrapping.createOscillator(context,'sine',200);
-			var compressor = audioWrapping.createCompressor(context);
+            var compressor = audioWrapping.createCompressor(context);
 			var distortion = null;
 			masterGain = context.createGain();
             masterGain.gain.value = 0.3;
@@ -44,7 +43,7 @@
 					results.data.pop();
 					var closeValues = results.data.map(function(d){return parseFloat(d[4]);});
 					var leveledArray = levelArray(closeValues);
-					distortion = waveShaping.createWaveShaperFromArray(leveledArray,1,context,oscillator,compressor);
+					distortion = waveShaping.createWaveShaperFromArray(leveledArray,1,context);
 					distortion.connect(masterGain);
 				}
 			);	
