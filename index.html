@@ -38,7 +38,7 @@
             compressor.connect(context.destination)
             nodes = [];
 			
-			parsing.parseStockData("GOOG","2015-03-30","2015-07-30", 
+			parsing.parseStockData("GOOG","2012-03-30","2015-07-30", 
 				function(results) {
 					results.data.shift();
 					results.data.pop();
