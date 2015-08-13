@@ -1,17 +1,14 @@
 var PTM = PTM || {};
-PTM.Parsing = (function(papaDependency){	
-	
+
+(function(papaDependency){
+	//Dependency Guards
 	if(papaDependency === null || typeof papaDependency === 'undefined'){
 		if(window.debug_flag) { console.log("PapaParse dependency not provided"); }
 		return;
 	} var Papa = papaDependency;
-
-	var Parsing = function() {var parsing = this; return parsing;}
+	//END: Depedency Guards
 	
-	var parseCSVAtURL = function(url, callback) {
-		Papa.parse(url, {download: true, complete: callback});
-	}
-	
+	//Creates Quandl request from ticker symbol and date range
 	var buildStockDataURL = function(tickerSymbol,startDate,endDate) {
 		return "https://www.quandl.com/api/v3/datasets/WIKI/" + tickerSymbol 
 		+ ".csv?sort_order=asc&exclude_headers=true&trim_start="  + startDate 
@@ -19,9 +16,14 @@ PTM.Parsing = (function(papaDependency){
 		+ "&column=4&transformation=rdiff";
 	}
 	
+	//YYYY-MM-DD
 	var isValidDateFormat = function(dateString){
 		var regex = /\d{4}-\d{2}-\d{2}/g;
 		return regex.test(dateString);	
+	}
+	
+	var parseCSVAtURL = function(url, callback) {
+		Papa.parse(url, {download: true, complete: callback});
 	}
 	
 	var parseStockData = function(tickerSymbol,startDate,endDate, callback){
@@ -34,16 +36,10 @@ PTM.Parsing = (function(papaDependency){
 		parseCSVAtURL(url, callback);
 	}
 	
-	Parsing.prototype = {
-		parseCSVAtURL: parseCSVAtURL,
-		parseStockData: parseStockData
-	}	
 	
-	Parsing.prototype.constructor = Parsing;	
-	return Parsing;	
+	//Module Export
+	PTM.Parsing = {
+		parseCSVAtURL : parseCSVAtURL,
+		parseStockData : parseStockData
+	}		
 })(Papa);
-
-var parsing = new PTM.Parsing();
-
-
-

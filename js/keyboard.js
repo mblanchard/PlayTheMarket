@@ -1,9 +1,11 @@
 var PTM = PTM || {};
 PTM.CreateKeyboard = (function(qwertyHancockDependency){
+	//Dependency Guard
 	if(qwertyHancockDependency === null || typeof qwertyHancockDependency === 'undefined'){
 		if(window.debug_flag) { console.log("Qwerty Hancock dependency not provided"); }
 		return;
 	} var QwertyHancock = qwertyHancockDependency;
+	//END: Dependency Guard
 	
 	
 	var  settings = {
@@ -18,7 +20,7 @@ PTM.CreateKeyboard = (function(qwertyHancockDependency){
 		octaves: 2
 	};
 	
-	var Keyboard = function(elementId){var keyboard = this; keyboard.nodes = []; keyboard.QH = initQH(elementId); return keyboard;}
+	var Keyboard = function(elementId, waveType){var keyboard = this; keyboard.nodes = []; keyboard.QH = initQH(elementId); keyboard.waveType = waveType; return keyboard;}
 	
 	var initQH = function(elementId) {
 		settings.id = elementId;
@@ -26,12 +28,16 @@ PTM.CreateKeyboard = (function(qwertyHancockDependency){
 		return keyboard;
 	}
 	
-	var bindToAudioDestination = function(audioDestination, keyboard) {
+	var setWaveType = function(waveType) {
+		this.waveType = waveType;
+	}
+	
+	var bindToAudioDestination = function(audioDestination) {
 		//Key Down Event
 		var k = this;
 		this.QH.keyDown = function (note, frequency) {
 			var oscillator = context.createOscillator();
-			oscillator.type = 'sine';
+			oscillator.type = k.waveType;
 			oscillator.frequency.value = frequency;
 			oscillator.connect(audioDestination);
 			oscillator.start(0);
@@ -54,7 +60,8 @@ PTM.CreateKeyboard = (function(qwertyHancockDependency){
 	}
 	
 	Keyboard.prototype = {
-		bindToAudioDestination
+		bindToAudioDestination: bindToAudioDestination,
+		setWaveType: setWaveType
 	};
 	
 	Keyboard.prototype.constructor = Keyboard;

@@ -141,7 +141,7 @@
     /**
      * Order notes into order defined by starting key in settings.
      * @param {array} notes_to_order Notes to be ordered.
-     * @return {array{ ordered_notes Ordered notes.
+     * @return {array} ordered_notes Ordered notes.
      */
     var orderNotes = function (notes_to_order) {
         var i,
@@ -176,6 +176,7 @@
         key.el.style.border = '1px solid ' + settings.borderColour;
         key.el.style.borderRight = 0;
         key.el.style.height = settings.height + 'px';
+        key.el.style.boxSizing = "content-box";
         key.el.style.width = key.width + 'px';
         key.el.style.borderRadius = '0 0 5px 5px';
 
@@ -195,6 +196,7 @@
         key.el.style.backgroundColor = settings.blackKeyColour;
         key.el.style.border = '1px solid ' + settings.borderColour;
         key.el.style.position = 'absolute';
+        key.el.style.boxSizing = "content-box";
         key.el.style.left = Math.floor(((white_key_width + 1) * (key.noteNumber + 1)) - (black_key_width / 2)) + 'px';
         key.el.style.width = black_key_width + 'px';
         key.el.style.height = (settings.height / 1.5) + 'px';

@@ -1,21 +1,18 @@
 var PTM = PTM || {};
-PTM.Audio = {
-
-	initContext : function() {
-		return new (window.AudioContext || window.webkitAudioContext)();
-
-	},
+(function(){
 	
-	createOscillator : function(context, waveType, freq) {
+	var initContext = function() { return new (window.AudioContext || window.webkitAudioContext)();	};
+	
+	var createOscillator = function(context, waveType, freq) {
 		var oscillator = context.createOscillator();
 		oscillator.type = waveType;
 		oscillator.frequency.value = freq; // value in hertz
 		oscillator.connect(context.destination);
 		oscillator.start(0);
 		return oscillator;
-	},
+	};
 	
-	createCompressor : function(context) {		
+	var createCompressor = function(context) {		
 		var compressor = context.createDynamicsCompressor();
 		compressor.threshold.value = -60;
 		compressor.knee.value = 10;
@@ -24,11 +21,19 @@ PTM.Audio = {
 		compressor.attack.value = 0;
 		compressor.release.value = 0.25;
 		return compressor;
-	},
+	};
 	
-	createGain: function(context, level) {
+	var createGain = function(context, level) {
 		var newGain = context.createGain();
 		newGain.gain.value = level;
 		return newGain;
+	};
+	
+	//Module Export			
+	PTM.Audio = {			
+		initContext : initContext,	
+		createOscillator : createOscillator,		
+		createCompressor : createCompressor,		
+		createGain: createGain
 	}
-}
+})();
