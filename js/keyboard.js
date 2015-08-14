@@ -37,20 +37,25 @@ PTM.CreateKeyboard = (function(qwertyHancockDependency){
 		var k = this;
 		this.QH.keyDown = function (note, frequency) {
 			var oscillator = context.createOscillator();
+			var gain = context.createGain();
+			gain.gain.value = 0.1;
 			oscillator.type = k.waveType;
 			oscillator.frequency.value = frequency;
-			oscillator.connect(audioDestination);
+			oscillator.connect(gain);
+			gain.connect(audioDestination);
 			oscillator.start(0);
-			k.nodes.push(oscillator);
+			gain.gain.setTargetAtTime(1.0,context.currentTime+ 0.1,0.4);
+			k.nodes.push({osc: oscillator, g: gain});
 		};		
 			
 		//Key Up Event
 		this.QH.keyUp = function (note, frequency) {
 			var new_nodes = [];
 			for (var i = 0; i < k.nodes.length; i++) {
-				if (Math.round(k.nodes[i].frequency.value) === Math.round(frequency)) {
-					k.nodes[i].stop(0);
-					k.nodes[i].disconnect();
+				if (Math.round(k.nodes[i].osc.frequency.value) === Math.round(frequency)) {
+					k.nodes[i].osc.stop(0);
+					k.nodes[i].g.disconnect();
+					k.nodes[i].osc.disconnect();
 				} else {
 					new_nodes.push(k.nodes[i]);
 				}

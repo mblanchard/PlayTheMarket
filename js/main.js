@@ -8,6 +8,7 @@ var distortion = null;
 
 compressor.connect(gain); 
 gain.connect(context.destination); 
+keyboard.bindToAudioDestination(compressor);
 
 var updateStockData = function() {
 	var stockSymbol = PTM.Form.getFieldValue('symbol');
