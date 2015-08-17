@@ -25,3 +25,9 @@ input {
 	-ms-user-select: all;      /* IE 10+ */
 	user-select: all;          /* Likely future */  
 }
+
+.pure-button {
+    padding: 1em 1em;
+    border-radius: 6px;
+    font-weight: 600;
+}

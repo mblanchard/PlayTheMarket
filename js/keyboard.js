@@ -20,7 +20,19 @@ PTM.CreateKeyboard = (function(qwertyHancockDependency){
 		octaves: 2
 	};
 	
-	var Keyboard = function(elementId, waveType){var keyboard = this; keyboard.nodes = []; keyboard.QH = initQH(elementId); keyboard.waveType = waveType; return keyboard;}
+	var Keyboard = function(elementId, waveType){
+		var keyboard = this; 
+		keyboard.nodes = []; 
+		keyboard.QH = initQH(elementId); 
+		keyboard.waveType = waveType; 
+		keyboard.attackDelay = 0.0;
+		keyboard.attackTime = 0.4;
+		keyboard.startGain = 0.1;
+		keyboard.peakGain = 1.0;
+		keyboard.sustainTime = 1.0;
+		keyboard.sustainGain = 0.1;
+		return keyboard;
+	}
 	
 	var initQH = function(elementId) {
 		settings.id = elementId;
@@ -44,7 +56,9 @@ PTM.CreateKeyboard = (function(qwertyHancockDependency){
 			oscillator.connect(gain);
 			gain.connect(audioDestination);
 			oscillator.start(0);
-			gain.gain.setTargetAtTime(1.0,context.currentTime+ 0.1,0.4);
+			//gain.gain.setTargetAtTime(1.0,context.currentTime, 0.4);
+			gain.gain.setTargetAtTime(k.peakGain,context.currentTime + k.attackDelay,k.attackTime);
+			//gain.gain.setTargetAtTime(k.sustainGain, context.currentTime + k.attackDelay+k.attackTime, k.sustainTime);
 			k.nodes.push({osc: oscillator, g: gain});
 		};		
 			

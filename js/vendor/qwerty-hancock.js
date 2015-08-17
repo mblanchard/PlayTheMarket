@@ -119,8 +119,14 @@
      * @param  {element} el DOM element to change colour of.
      */
     var lightenUp = function lightenUp (el) {
-        if (el !== null || typeof el === undefined) {
-            el.style.backgroundColor = settings.activeColour;
+        
+
+        if (el !== null || typeof el === 'undefined') {
+           //el.style.backgroundColor = settings.activeColour;
+           if (el.classList)
+                el.classList.add('playing');
+            else
+                el.className += ' playing';
         }
     };
 
@@ -130,11 +136,17 @@
      */
     var darkenDown = function darkenDown (el) {
         if (el !== null) {
+            if (el.classList)
+                el.classList.remove('playing');
+            else
+                el.className = el.className.replace(new RegExp('(^|\\b)' + 'playing'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+            /*
             if (el.getAttribute('data-note-type') === 'white') {
                 el.style.backgroundColor = settings.whiteKeyColour;
             } else {
                 el.style.backgroundColor = settings.blackKeyColour;
             }
+            */
         }
     };
 
@@ -172,13 +184,8 @@
      * @param  {element} el White key DOM element.
      */
     var styleWhiteKey = function (key) {
-        key.el.style.backgroundColor = settings.whiteKeyColour;
-        key.el.style.border = '1px solid ' + settings.borderColour;
-        key.el.style.borderRight = 0;
-        key.el.style.height = settings.height + 'px';
-        key.el.style.boxSizing = "content-box";
+        key.el.className = "qh-white"
         key.el.style.width = key.width + 'px';
-        key.el.style.borderRadius = '0 0 5px 5px';
 
         if (key.noteNumber === getTotalWhiteKeys() - 1) {
             key.el.style.border = '1px solid ' + settings.borderColour;
@@ -190,17 +197,12 @@
      * @param  {element} el Black key DOM element.
      */
     var styleBlackKey = function (key) {
+        key.el.className = "qh-black"
         var white_key_width = getWhiteKeyWidth(getTotalWhiteKeys()),
             black_key_width = Math.floor(white_key_width / 2);
-
-        key.el.style.backgroundColor = settings.blackKeyColour;
-        key.el.style.border = '1px solid ' + settings.borderColour;
-        key.el.style.position = 'absolute';
-        key.el.style.boxSizing = "content-box";
+            
         key.el.style.left = Math.floor(((white_key_width + 1) * (key.noteNumber + 1)) - (black_key_width / 2)) + 'px';
         key.el.style.width = black_key_width + 'px';
-        key.el.style.height = (settings.height / 1.5) + 'px';
-        key.el.style.borderRadius = '0 0 3px 3px';
     };
 
     /**
