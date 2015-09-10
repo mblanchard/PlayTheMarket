@@ -1,5 +1,12 @@
 var PTM = PTM || {};
-(function(){
+(function(){	
+	//Dependency Guard
+	if(PTM.Audio === null || typeof PTM.Audio === 'undefined'){
+		if(window.debug_flag) { console.log("Audio dependency not provided"); } return;
+	}
+	//END: Dependency Guard
+	
+	
 	//Find min value in array
 	function arrayMin(arr) {
 		var len = arr.length, min = Infinity;
@@ -63,8 +70,7 @@ var PTM = PTM || {};
 		return levelArray(closeValues);
 	};
 	
-	var createWaveShaperFromArray = function(array, maxIntensity, context) {
-		var distortion = context.createWaveShaper();
+	var createWaveShaperCurveFromArray = function(array, maxIntensity) {
 		var maxValue = arrayMax(array); var minValue = arrayMin(array);
 		var vertShift = (maxValue+minValue)/2; var intensityShift = maxIntensity/ ( (maxValue-minValue) /2 );
 		var normalize=function(value){return (value - vertShift) * intensityShift;}
@@ -73,14 +79,13 @@ var PTM = PTM || {};
 			curve[i] = normalize(array[i]);
 		}
 		if(window.debug_flag) { console.log(curve); }
-		distortion.curve = curve;
-		distortion.oversample = '4x';
-		return distortion;		
+		return curve;	
 	};
 	
-	var quandlStockDataToWaveShaper = function(array, maxIntensity, context) {
+	var quandlStockDataToWaveShaper = function(array, maxIntensity) {
 		var levelArray = transformQuandlStockData(array);
-		return createWaveShaperFromArray(levelArray, maxIntensity, context);
+		var curve = createWaveShaperCurveFromArray(levelArray, maxIntensity);
+		return PTM.Audio.createWaveShaper(curve);
 	}
 		
 	//Module Exports

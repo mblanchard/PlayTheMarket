@@ -1,13 +1,13 @@
 window.debug_flag = true;
 			
-var context = PTM.Audio.initContext();
-var compressor = PTM.Audio.createCompressor(context);
-var gain = PTM.Audio.createGain(context, 0.3);
+//var context = PTM.Audio.initContext();
+var compressor = PTM.Audio.createCompressor();
+var gain = PTM.Audio.createGain(0.3);
 var keyboard = new PTM.CreateKeyboard('keyboard','sine');
 var distortion = null;
 
 compressor.connect(gain); 
-gain.connect(context.destination); 
+gain.connect(PTM.Audio.context.destination); 
 keyboard.bindToAudioDestination(compressor);
 
 var updateStockData = function() {
@@ -17,7 +17,7 @@ var updateStockData = function() {
 	
 	PTM.Parsing.parseStockData(stockSymbol, startDate, endDate, 
 		function(results) {
-			distortion = PTM.WaveShaping.quandlStockDataToWaveShaper(results.data,1,context);
+			distortion = PTM.WaveShaping.quandlStockDataToWaveShaper(results.data,1);
 			distortion.connect(compressor);
 			keyboard.bindToAudioDestination(distortion);
 		}

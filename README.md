@@ -11,6 +11,6 @@ Play the Market
 
 ###Next steps/Issues to resolve
 - Right now the distortion produces inharmonic partials (iterative sinusoidal regression against line-leveled stock data as alternative)
-- Expose stock/date interval selection in UI
+- ~~Expose stock/date interval selection in UI~~
 - Quandl imposes a limit of 50 requests/day for unauthorized users.
 

@@ -2,9 +2,12 @@ var PTM = PTM || {};
 PTM.CreateKeyboard = (function(qwertyHancockDependency){
 	//Dependency Guard
 	if(qwertyHancockDependency === null || typeof qwertyHancockDependency === 'undefined'){
-		if(window.debug_flag) { console.log("Qwerty Hancock dependency not provided"); }
-		return;
+		if(window.debug_flag) { console.log("Qwerty Hancock dependency not provided"); } return;
 	} var QwertyHancock = qwertyHancockDependency;
+		
+	if(PTM.Audio === null || typeof PTM.Audio === 'undefined'){
+		if(window.debug_flag) { console.log("Audio dependency not provided"); } return;
+	}
 	//END: Dependency Guard
 	
 	
@@ -48,16 +51,13 @@ PTM.CreateKeyboard = (function(qwertyHancockDependency){
 		//Key Down Event
 		var k = this;
 		this.QH.keyDown = function (note, frequency) {
-			var oscillator = context.createOscillator();
-			var gain = context.createGain();
-			gain.gain.value = 0.1;
-			oscillator.type = k.waveType;
-			oscillator.frequency.value = frequency;
+			var oscillator = PTM.Audio.createOscillator(k.waveType,frequency);
+			var gain = PTM.Audio.createGain(0.1);
 			oscillator.connect(gain);
 			gain.connect(audioDestination);
 			oscillator.start(0);
 			//gain.gain.setTargetAtTime(1.0,context.currentTime, 0.4);
-			gain.gain.setTargetAtTime(k.peakGain,context.currentTime + k.attackDelay,k.attackTime);
+			gain.gain.setTargetAtTime(k.peakGain,PTM.Audio.context.currentTime + k.attackDelay,k.attackTime);
 			//gain.gain.setTargetAtTime(k.sustainGain, context.currentTime + k.attackDelay+k.attackTime, k.sustainTime);
 			k.nodes.push({osc: oscillator, g: gain});
 		};		
