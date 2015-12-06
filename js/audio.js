@@ -25,7 +25,7 @@ var PTM = PTM || {};
 		var waveShaper	 = context.createWaveShaper();
 		waveShaper.curve = curve;
 		waveShaper.oversample = '4x';
-		return waveShaper;
+    return waveShaper;
 	}
 	
 	var createGain = function(level) {

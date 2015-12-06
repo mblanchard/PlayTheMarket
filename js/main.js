@@ -1,6 +1,6 @@
 window.debug_flag = true;
 			
-//var context = PTM.Audio.initContext();
+
 var compressor = PTM.Audio.createCompressor();
 var gain = PTM.Audio.createGain(0.3);
 var keyboard = new PTM.CreateKeyboard('keyboard','sine');
